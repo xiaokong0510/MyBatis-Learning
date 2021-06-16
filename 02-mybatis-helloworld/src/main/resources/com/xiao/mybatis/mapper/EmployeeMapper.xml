@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace:名称空间，可以绑定一个Mapper接口-->
+<!--编写sql语句-->
+<!--id：唯一标识，如果有Mapper接口文件，需要对应其中的方法名-->
+<!--resultType：对应返回结果类型-->
+<!--#{id}：从传递过来的参数中取出id值-->
+<mapper namespace="com.xiao.mybatis.mapper.EmployeeMapper">
+    <select id="selectEmp" resultType="com.xiao.mybatis.entity.Employee">
+        select  id,last_name lastName,gender,email from tbl_employee where id = #{id}
+    </select>
+</mapper>
