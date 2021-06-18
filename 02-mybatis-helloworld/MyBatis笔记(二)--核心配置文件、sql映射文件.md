@@ -90,7 +90,7 @@ email VARCHAR(255)
 )ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 INSERT INTO tbl_employee VALUES
-(1,"zhansgan",0,"zhangsan@qq.com"),
+(1,"zhangsan",0,"zhangsan@qq.com"),
 (2,"lisi",0,"lisi@163.com"),
 (3,"wangwu",1,"wangwu@126.com");
 ```

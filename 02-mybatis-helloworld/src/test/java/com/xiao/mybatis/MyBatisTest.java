@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 
 /**
  * @author KongXiao
@@ -40,7 +41,41 @@ public class MyBatisTest {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             //获得接口文件的代理对象，执行方法
             EmployeeMapper employeeMapper = sqlSession.getMapper(EmployeeMapper.class);
-            System.out.println(employeeMapper.selectEmp(1));
+//            System.out.println(employeeMapper.selectEmp(1));
+//            System.out.println(employeeMapper.selectAll());
+//            System.out.println(employeeMapper.selectEmpByIdToMap(1));
+//            System.out.println(employeeMapper.selectAllToMap());
+            Employee employee = employeeMapper.selectEmpByIdAndName(1, "zhangsan");
+            System.out.println(employee);
+
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("id", 1);
+            map.put("lastName", "zhangsan");
+            System.out.println(employeeMapper.selectEmpByMap(map));
         }
     }
+
+    // 提取的获得SqlSessionFactory对象的方法
+    private SqlSessionFactory getSqlSessionFactory() throws IOException {
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        //由SqlSessionFactoryBuilder对象获取SqlSessionFactory对象
+        return new SqlSessionFactoryBuilder().build(inputStream);
+    }
+
+    // 测试增删改
+    @Test
+    public void testAdd() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        // 默认不自动提交事务，需要手动提交，或者构造方法传入true
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
+        //   mapper.addEmp(new Employee(null,"林青霞","lingqingxia@163.com","1"));
+        //   mapper.deleteEmpById(1);
+            mapper.updateEmp( new Employee(5,"林青霞","lingqingxia@163.com","0"));
+            // 手动提交事务
+            sqlSession.commit();
+        }
+    }
+
 }
