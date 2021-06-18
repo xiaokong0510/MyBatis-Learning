@@ -1,5 +1,10 @@
 ## MyBatis笔记(一)--原生JDBC
 
+MyBatis学习笔记(一)， 内容包括：
+
+1. 原生JDBC编程步骤；
+2. JDBC关键对象
+
 ## 1 JDBC简介
 
 > JDBC (Java Database Connectivity) API，即Java数据库编程接口。

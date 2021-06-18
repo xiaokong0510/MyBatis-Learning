@@ -1,6 +1,6 @@
-# MyBatis(一)----核心配置文件、sql映射文件
+# MyBatis(二)----核心配置文件、sql映射文件
 
-MyBatis学习笔记(一)， 内容包括：
+MyBatis学习笔记(二)， 内容包括：
 
 1. MyBatis入门案例
 2. MyBatis核心配置文件结构说明
@@ -299,7 +299,7 @@ try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
 
 ### 3.4 作用域（Scope）和生命周期
 
-- **SqlSessionFactoryBuilder **
+- **SqlSessionFactoryBuilder：**
 
   可以理解为数据库连接池对象，一旦创建了 SqlSessionFactory，就不再需要它了，因此最佳作用域是方法作用域（也就是局部方法变量）；
 
@@ -928,3 +928,4 @@ System.out.println(map);
     where id = #{id}
 </select>
 ```
+
