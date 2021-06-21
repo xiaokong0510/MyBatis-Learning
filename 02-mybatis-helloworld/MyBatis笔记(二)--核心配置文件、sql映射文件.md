@@ -202,7 +202,7 @@ sql语句的参数用#获取
 <!--resultType：对应返回结果类型-->
 <!--#{id}：从传递过来的参数中取出id值-->
 <mapper namespace="com.xiao.dao.EmployeeMapper">
-    <select id="selectEmp" resultType="com.xiao.pojo.Employee">
+    <select id="selectEmp" resultType="com.xiao.mybatis.entity.Employee">
         select  * from tbl_employee where id = #{id}
     </select>
 </mapper>
@@ -435,7 +435,7 @@ password=root
 
 ```xml
  <typeAliases>
-      <package name="com.xiao.pojo"/>
+      <package name="com.xiao.mybatis.entity"/>
  </typeAliases>
 ```
 

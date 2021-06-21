@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <properties resource="db.properties"/>
+    <settings>
+        <!--驼峰映射-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!-- 打印sql日志 -->
+        <setting name="logImpl" value="STDOUT_LOGGING" />
+        <!--开启懒加载-->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="aggressiveLazyLoading" value="false"/>
+        
+    </settings>
+    <!--别名-->
+    <typeAliases>
+      <package name="com.xiao.mybatis.entity"/>
+    </typeAliases>
+    <!--配置环境组，选择默认的环境id-->
+    <environments default="development">
+        <!--配置单个环境并指定id为development-->
+        <!--可以同时配置多个环境，但是只能选择一个使用-->
+        <environment id="development">
+            <!--配置事务管理类型，JDBC-->
+            <transactionManager type="JDBC"/>
+            <!--配置连接池POOLED-->
+            <dataSource type="POOLED">
+                <!--数据库连接池4个参数-->
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!--配置映射,注册Mapper文件-->
+    <mappers>
+        <mapper class="com.xiao.mybatis.mapper.DeptMapper"/>
+    </mappers>
+</configuration>

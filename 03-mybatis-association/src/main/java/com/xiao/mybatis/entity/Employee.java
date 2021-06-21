@@ -5,8 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * 员工实体类
  * @author KongXiao
- * @date 2021/6/16
+ * @date 2021/6/18
  */
 @Data
 @NoArgsConstructor
@@ -16,4 +17,6 @@ public class Employee {
     private String lastName;
     private String email;
     private String gender;
+    private Dept dept;
+
 }

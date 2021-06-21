@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiao.mybatis.mapper.EmployeeMapper">
+
+    <!--级联属性封装结果集-->
+    <resultMap id="MyDifEmp" type="com.xiao.mybatis.entity.Employee">
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName"/>
+        <result column="gender" property="gender"/>
+        <result column="email" property="email"/>
+        <result column="did" property="dept.id"/>
+        <result column="dept_name" property="dept.departmentName"/>
+    </resultMap>
+
+<!--    <select id="getEmpAndDept" resultMap="MyDifEmp">-->
+<!--        select emp.id        id,-->
+<!--               emp.last_name last_name,-->
+<!--               emp.gender    gender,-->
+<!--               emp.email     email,-->
+<!--               dep.id        did,-->
+<!--               dep.dept_name dept_name-->
+<!--        from tbl_employee emp,-->
+<!--             tbl_dept dep-->
+<!--        where emp.d_id = dep.id-->
+<!--          and emp.id = #{id}-->
+<!--    </select>-->
+
+    <!--association定义关联对象，查询结果本质上是Employee类-->
+    <resultMap id="EmpAndDep" type="com.xiao.mybatis.entity.Employee">
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName"/>
+        <result column="gender" property="gender"/>
+        <result column="email" property="email"/>
+
+        <!-- dept成员是一个对象，需要用association指定联合的JavaBean对象-->
+        <!-- property="dept":指定哪个属性是联合的对象-->
+        <!-- javaType:指定这个属性对象的类型，不能省略-->
+        <association property="dept" javaType="com.xiao.mybatis.entity.Dept">
+            <id column="did" property="id"/>
+            <id column="dept_name" property="departmentName"/>
+        </association>
+    </resultMap>
+
+
+    <!--association分步查询-->
+    <!--第一步,先查询员工信息-->
+    <!--第二步,根据查询到的员工信息的did，寻找对应的部门信息-->
+    <select id="getEmpAndDept" resultMap="EmpAndDep2">
+        <!--第一步,先查询员工信息-->
+        select id, last_name, gender,email,d_id from tbl_employee where id = #{id}
+    </select>
+    <resultMap id="EmpAndDep2" type="com.xiao.mybatis.entity.Employee">
+        <!--简单的属性直接写-->
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName"/>
+        <result column="gender" property="gender"/>
+        <result column="email" property="email"/>
+        <!--复杂的属性，需要单独处理-->
+        <!--select：调用指定的方法查出结果-->
+        <!--column：将哪一列的值传给这个方法-->
+        <!--property：查出的结果封装给property指定的属性-->
+        <association property="dept" column="d_id" javaType="com.xiao.mybatis.entity.Dept" select="getDept"
+                     fetchType="eager"/>
+
+    </resultMap>
+    <!--第二步,根据查询到的员工信息中的d_id，查询对应的部门信息-->
+    <select id="getDept" resultType="com.xiao.mybatis.entity.Dept">
+        select id, dept_name departmentName
+        from tbl_dept
+        where id = #{d_id}
+    </select>
+
+</mapper>
