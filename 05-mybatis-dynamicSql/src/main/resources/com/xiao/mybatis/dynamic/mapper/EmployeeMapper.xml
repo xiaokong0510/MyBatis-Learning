@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiao.mybatis.dynamic.mapper.EmployeeMapper">
+    <cache eviction="FIFO" flushInterval="60000" readOnly="false" size="1024"></cache>
+<!--    <insert id="insertEmp">-->
+<!--        insert into tbl_employee(last_name, gender, email) values-->
+<!--        <foreach collection="emps" item="emp" separator=",">-->
+<!--            (#{emp.lastName},#{emp.gender},#{emp.email})-->
+<!--        </foreach>-->
+<!--    </insert>-->
+
+    <insert id="insertEmp">
+        <foreach collection="emps" item="emp" separator=";">
+            insert into tbl_employee(last_name, gender, email)
+            values (#{emp.lastName},#{emp.gender},#{emp.email})
+        </foreach>
+    </insert>
+
+    <select id="selectEmp" resultType="com.xiao.mybatis.dynamic.entity.Employee">
+        select *
+        from tbl_employee
+        where
+        <if test="id!=null">
+            id = #{id}
+        </if>
+        <if test="lastName!=null and lastName !='' ">
+            and last_name = #{lastName}
+        </if>
+        <!--ognl会进行字符串与数字的转换判断-->
+        <if test="gender==0 or gender == 1">
+            and gender = #{gender}
+        </if>
+        <if test="email!=null">
+            and email = #{email}
+        </if>
+    </select>
+
+    <select id="selectEmp2" resultType="com.xiao.mybatis.dynamic.entity.Employee">
+        select *
+        from tbl_employee
+        <where>
+            <if test="id!=null">
+                id = #{id}
+            </if>
+            <if test="lastName!=null and lastName !='' ">
+                and last_name = #{lastName}
+            </if>
+            <!--ognl会进行字符串与数字的转换判断-->
+            <if test="gender==0 or gender == 1">
+                and gender = #{gender}
+            </if>
+            <if test="email!=null">
+                and email = #{email}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectEmp3" resultType="com.xiao.mybatis.dynamic.entity.Employee">
+        select *
+        from tbl_employee
+        <where>
+            <choose>
+                <when test="id!=null">
+                    id = #{id}
+                </when>
+                <when test="lastName!=null and lastName !='' ">
+                    and last_name = #{lastName}
+                </when>
+                <otherwise>
+                    and gender=0
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <select id="selectEmpByList" resultType="com.xiao.mybatis.dynamic.entity.Employee">
+        select  * from tbl_employee
+        <foreach collection="ids" item="item_id" separator="," open="where id in (" close=")">
+            #{item_id}
+        </foreach>
+    </select>
+
+<!--    <select id="selectEmp" resultType="com.xiao.mybatis.dynamic.entity.Employee">-->
+<!--        <bind name="_lastName" value="'%' + lastName + '%'" />-->
+<!--        select * from tbl_employee where last_name like #{_lastName}-->
+<!--    </select>-->
+
+    <update id="updateEmp">
+        update tbl_employee
+        <set>
+            <if test="lastName!=null">
+                last_name = #{lastName},
+            </if>
+            <if test="gender!=null">
+                gender = #{gender},
+            </if>
+            <if test="email!=null">
+                email = #{email}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="selectEmpById" resultType="com.xiao.mybatis.dynamic.entity.Employee">
+        select * from tbl_employee where id = #{id}
+    </select>
+</mapper>

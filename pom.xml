@@ -13,6 +13,7 @@
         <module>02-mybatis-helloworld</module>
         <module>03-mybatis-association</module>
         <module>04-mybatis-collection</module>
+        <module>05-mybatis-dynamicSql</module>
     </modules>
 
     <properties>
